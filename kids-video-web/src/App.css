@@ -40,13 +40,32 @@
 /* Responsive video fullscreen for small/mobile screens */
 .video-container {
   display: block;
-  max-width: 100%;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  background: #000;
 }
 
 .video-container iframe,
 .video-container > div {
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+.break-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.timer {
+  margin-top: 8px;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {
@@ -93,5 +112,3 @@
     font-weight: 600;
   }
 }
-
-
