@@ -121,23 +121,30 @@ function App() {
     <div className="App">
       {!playing && !onBreak && (
         <div>
+          <p>YouTube Video ID</p>
           <input
             placeholder="YouTube Video ID"
             value={videoId}
             onChange={e => setVideoId(e.target.value)}
           />
+          <br></br>
+          <p>Play Minutes</p>
           <input
             type="number"
             placeholder="Minutes"
             value={playMinutes}
             onChange={e => setPlayMinutes(Number(e.target.value))}
           />
+          <br></br>
+          <p>Break Minutes</p>
           <input
             type="number"
             placeholder="Break minutes"
             value={breakMinutes}
             onChange={e => setBreakMinutes(Number(e.target.value))}
           />
+          <br></br>
+          <p>Total Cycles</p>
           <input
             type="number"
             placeholder="Cycles"
