@@ -4,8 +4,8 @@ import './App.css';
 
 function App() {
   const [videoId, setVideoId] = useState('');
-  const [playMinutes, setPlayMinutes] = useState(1);
-  const [breakMinutes, setBreakMinutes] = useState(1);
+  const [playSeconds, setPlaySeconds] = useState(20);
+  const [breakSeconds, setBreakSeconds] = useState(10);
   const [totalCycles, setTotalCycles] = useState(1);
   const [cycleIndex, setCycleIndex] = useState(1);
   const [playing, setPlaying] = useState(false);
@@ -14,6 +14,7 @@ function App() {
   const [hasStarted, setHasStarted] = useState(false);
 
   const playerRef = useRef(null);
+  const appRef = useRef(null);
   const timerRef = useRef(null);
   const playingRef = useRef(false);
 
@@ -34,6 +35,20 @@ function App() {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+    }
+  };
+
+  const requestFullscreen = () => {
+    if (!appRef.current) {
+      return;
+    }
+    const element = appRef.current;
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      return;
+    }
+    if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
     }
   };
 
@@ -61,8 +76,8 @@ function App() {
     if (playerRef.current) {
       playerRef.current.playVideo();
     }
-    startCountdown(playMinutes * 60, () => {
-      if (breakMinutes > 0) {
+    startCountdown(playSeconds, () => {
+      if (breakSeconds > 0) {
         startBreakSegment(nextCycleIndex);
       } else if (nextCycleIndex < totalCycles) {
         startPlaySegment(nextCycleIndex + 1);
@@ -80,7 +95,7 @@ function App() {
     if (playerRef.current) {
       playerRef.current.pauseVideo();
     }
-    startCountdown(breakMinutes * 60, () => {
+    startCountdown(breakSeconds, () => {
       if (currentCycle < totalCycles) {
         startPlaySegment(currentCycle + 1);
       } else {
@@ -92,11 +107,12 @@ function App() {
 
   const startPlayback = () => {
     const safeCycles = Math.max(1, Math.floor(totalCycles));
-    const safePlay = Math.max(0, Math.floor(playMinutes));
-    const safeBreak = Math.max(0, Math.floor(breakMinutes));
+    const safePlay = Math.max(0, Math.floor(playSeconds));
+    const safeBreak = Math.max(0, Math.floor(breakSeconds));
     setTotalCycles(safeCycles);
-    setPlayMinutes(safePlay);
-    setBreakMinutes(safeBreak);
+    setPlaySeconds(safePlay);
+    setBreakSeconds(safeBreak);
+    requestFullscreen();
     startPlaySegment(1);
   };
 
@@ -118,7 +134,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App" ref={appRef}>
       {!playing && !onBreak && (
         <div>
           <p>YouTube Video ID</p>
@@ -128,20 +144,20 @@ function App() {
             onChange={e => setVideoId(e.target.value)}
           />
           <br></br>
-          <p>Play Minutes</p>
+          <p>Play Seconds</p>
           <input
             type="number"
-            placeholder="Minutes"
-            value={playMinutes}
-            onChange={e => setPlayMinutes(Number(e.target.value))}
+            placeholder="Seconds"
+            value={playSeconds}
+            onChange={e => setPlaySeconds(Number(e.target.value))}
           />
           <br></br>
-          <p>Break Minutes</p>
+          <p>Break Seconds</p>
           <input
             type="number"
-            placeholder="Break minutes"
-            value={breakMinutes}
-            onChange={e => setBreakMinutes(Number(e.target.value))}
+            placeholder="Break seconds"
+            value={breakSeconds}
+            onChange={e => setBreakSeconds(Number(e.target.value))}
           />
           <br></br>
           <p>Total Cycles</p>
