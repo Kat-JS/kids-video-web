@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## AWS Polly TTS
+
+Set these environment variables before running the app (Vite uses `VITE_` prefixes):
+
+- `VITE_AWS_REGION` (example: `us-east-1`)
+- `VITE_AWS_IDENTITY_POOL_ID` (Cognito Identity Pool ID with `polly:SynthesizeSpeech`)
+
 ## Available Scripts
 
 In the project directory, you can run:

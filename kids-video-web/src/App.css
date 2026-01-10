@@ -1,7 +1,19 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .App {
   text-align: center;
   background-color: lightblue;
-  height: 500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .App-logo {
@@ -48,7 +60,18 @@
   aspect-ratio: 16 / 9;
   background: #000;
   position: relative;
+  opacity: 0;
+  transition: opacity 1500ms ease;
 }
+
+.video-container.is-playing {
+  opacity: 1;
+}
+
+.video-container.is-paused {
+  opacity: 0;
+}
+
 
 .video-container iframe,
 .video-container > div {
@@ -68,11 +91,60 @@
   z-index: 10000;
 }
 
+.break-video {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.break-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.break-video__caption {
+  position: absolute;
+  bottom: 6%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  flex-direction: column;
+  z-index: 10000;
+}
+
+.end-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  flex-direction: column;
+  z-index: 10000;
+}
+
 .timer {
   position: absolute;
   top: 0px;
   color: white;
-  z-index: 2;
+  z-index: -2;
   background: rgba(0, 0, 0, 0.45);
   padding: 6px 10px;
   border-radius: 6px;
