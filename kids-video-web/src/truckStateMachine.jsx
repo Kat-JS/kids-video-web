@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { synthesizeSpeech } from './googleTts';
 
-export default function TruckExperience({ customMessage, videoPaths, onComplete, autoStart = true }) {
+export default function TruckExperience({
+  customMessage,
+  videoPaths,
+  onComplete,
+  onEnd,
+  ttsLanguage = 'en-US',
+  autoStart = true,
+}) {
   // States: 'LOCKED', 'IDLE', 'TALKING', 'DRIVING'
   const [status, setStatus] = useState('LOCKED');
   const [ttsError, setTtsError] = useState('');
@@ -66,6 +73,7 @@ export default function TruckExperience({ customMessage, videoPaths, onComplete,
         window.speechSynthesis.cancel();
       }
       const utterance = new SpeechSynthesisUtterance(customMessage.trim());
+      utterance.lang = ttsLanguage || 'en-US';
       utterance.rate = 0.9;
       utterance.pitch = 0.8;
       utterance.onstart = () =>  { setStatus('TALKING'), console.log('Playing browser TTS...'); };
@@ -80,7 +88,9 @@ export default function TruckExperience({ customMessage, videoPaths, onComplete,
       }
       setIsGenerating(true);
       try {
-        const audioUrl = await synthesizeSpeech(customMessage.trim());
+        const audioUrl = await synthesizeSpeech(customMessage.trim(), {
+          languageCode: ttsLanguage || 'en-US',
+        });
         if (audioUrlRef.current) {
           URL.revokeObjectURL(audioUrlRef.current);
         }
@@ -120,7 +130,17 @@ export default function TruckExperience({ customMessage, videoPaths, onComplete,
       <video src={videoPaths.talking} autoPlay loop muted style={{...vStyle, opacity: status === 'TALKING' ? 1 : 0}} />
 
       {/* DRIVING (Top Layer) */}
-      <video ref={drivingRef} src={videoPaths.driving} muted style={{...vStyle, opacity: status === 'DRIVING' ? 1 : 0}} />
+      <video
+        ref={drivingRef}
+        src={videoPaths.driving}
+        muted
+        onEnded={() => {
+          if (typeof onEnd === 'function') {
+            onEnd();
+          }
+        }}
+        style={{...vStyle, opacity: status === 'DRIVING' ? 1 : 0}}
+      />
 
       {/* --- UI OVERLAYS --- */}
 

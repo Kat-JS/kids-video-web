@@ -19,20 +19,22 @@ const base64ToBlob = (base64, mimeType) => {
 export const synthesizeSpeech = async (text, options = {}) => {
   const {
     languageCode = 'en-US',
-    voiceName = 'en-US-Neural2-D',
+    voiceName,
     ssmlGender = 'MALE',
     speakingRate = 0.95,
     pitch = -1.0,
     audioEncoding = 'MP3',
   } = options;
+  const resolvedLanguageCode = languageCode || 'en-US';
+  const resolvedVoiceName = voiceName ?? (resolvedLanguageCode === 'en-US' ? 'en-US-Neural2-D' : '');
 
   const response = await fetch(getEndpoint(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       text,
-      languageCode,
-      voiceName,
+      languageCode: resolvedLanguageCode,
+      ...(resolvedVoiceName ? { voiceName: resolvedVoiceName } : {}),
       ssmlGender,
       audioEncoding,
       speakingRate,

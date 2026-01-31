@@ -6,10 +6,19 @@ const PlaybackControls = ({
   playSeconds,
   breakSeconds,
   totalCycles,
+  introMessage,
+  endMessage,
+  ttsLanguage,
+  introPlaceholder,
+  endPlaceholder,
+  ttsLanguagePlaceholder,
   onChangeVideoId,
   onRemoveVideoId,
   onAddVideoInput,
   onStartPlayback,
+  onSetIntroMessage,
+  onSetEndMessage,
+  onSetTtsLanguage,
   onSetPlaySeconds,
   onSetBreakSeconds,
   onSetTotalCycles,
@@ -48,6 +57,41 @@ const PlaybackControls = ({
       value={playSeconds}
       onChange={e => onSetPlaySeconds(Number(e.target.value))}
     />
+    <br />
+    <p>Intro Message</p>
+    <textarea
+      placeholder={introPlaceholder}
+      value={introMessage}
+      onChange={e => onSetIntroMessage(e.target.value)}
+      rows={3}
+    />
+    <br />
+    <p>End Message</p>
+    <textarea
+      placeholder={endPlaceholder}
+      value={endMessage}
+      onChange={e => onSetEndMessage(e.target.value)}
+      rows={3}
+    />
+    <br />
+    <p>TTS Language</p>
+    <select
+      value={ttsLanguage || ttsLanguagePlaceholder}
+      onChange={e => onSetTtsLanguage(e.target.value)}
+    >
+      <option value="en-US">English (US)</option>
+      <option value="en-GB">English (UK)</option>
+      <option value="es-ES">Spanish (ES)</option>
+      <option value="es-MX">Spanish (MX)</option>
+      <option value="fr-FR">French</option>
+      <option value="de-DE">German</option>
+      <option value="it-IT">Italian</option>
+      <option value="pt-BR">Portuguese (BR)</option>
+      <option value="ja-JP">Japanese</option>
+      <option value="ko-KR">Korean</option>
+      <option value="zh-CN">Chinese (Simplified)</option>
+      <option value="zh-TW">Chinese (Traditional)</option>
+    </select>
     <br />
     <p>Break Seconds</p>
     <input

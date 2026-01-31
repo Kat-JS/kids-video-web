@@ -20,6 +20,12 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  transition: background-color 5000ms ease;
+}
+
+.App.app-player {
+  background-color: #000;
 }
 
 .App-logo {
@@ -67,15 +73,27 @@ html, body {
   background: #000;
   position: relative;
   opacity: 0;
-  transition: opacity 1500ms ease;
+  transition: opacity 5000ms ease;
 }
 
 .video-container.is-playing {
   opacity: 1;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+  z-index: 9000;
 }
 
 .video-container.is-paused {
   opacity: 0;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+  z-index: 9000;
 }
 
 .video-container.is-preload {
@@ -161,11 +179,18 @@ html, body {
   z-index: 10000;
 }
 
+.end-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 10000;
+}
+
 .timer {
   position: absolute;
   top: 0px;
   color: white;
-  z-index: -2;
+  z-index: -10;
   background: rgba(0, 0, 0, 0.45);
   padding: 6px 10px;
   border-radius: 6px;
