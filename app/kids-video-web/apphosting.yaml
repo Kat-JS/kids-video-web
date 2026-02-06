@@ -1,0 +1,10 @@
+kind: "publishedContent"
+
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  # This ensures the backend doesn't time out during startup
+  minInstances: 0
+
+# App Hosting automatically manages the PORT env var, 
+# but we can ensure it is recognized here.
